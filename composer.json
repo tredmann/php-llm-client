@@ -13,11 +13,13 @@
         }
     ],
     "require": {
+        "php": "^8.3",
         "openai-php/client": "^0.10.3",
         "symfony/http-client": "^7.2",
         "nyholm/psr7": "^1.8",
         "google-gemini-php/client": "^1.0",
-        "tredmann/php-ollama": "^1.0"
+        "tredmann/php-ollama": "^1.0",
+        "vlucas/phpdotenv": "^5.6"
     },
     "config": {
         "allow-plugins": {
@@ -28,17 +30,8 @@
         "laravel/pint": "^1.19"
     },
     "scripts": {
-        "phpunit": [
-            "XDEBUG_MODE=off ./vendor/bin/phpunit -d memory_limit=2048M "
-        ],
         "pint": [
             "@php vendor/bin/pint --preset=psr12"
-        ],
-        "coverage": [
-            "XDEBUG_MODE=coverage ./vendor/bin/phpunit -d memory_limit=2048M --coverage-html coverage/"
-        ],
-        "phpstan": [
-            "vendor/bin/phpstan analyse src --level=5"
         ]
     }
 }

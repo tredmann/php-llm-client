@@ -1,15 +1,14 @@
 <?php
 
-namespace LLM\LLMs;
+namespace LLM\LLM;
 
-use LLM\DTOs\Response;
-use LLM\Interfaces\ClientInterface;
+use LLM\Interfaces\LLMInterface;
 use Ollama\Api\Completion;
 use Ollama\Api\ListLocalModels;
 use Ollama\Client\OllamaClient;
 use Ollama\Requests\CompletionRequest;
 
-readonly class Ollama implements ClientInterface
+readonly class Ollama implements LLMInterface
 {
     private Completion $completionApi;
     private ListLocalModels $listLocalModelsApi;
@@ -20,19 +19,12 @@ readonly class Ollama implements ClientInterface
         $this->listLocalModelsApi = new ListLocalModels($this->client);
     }
 
-    public function getModels(): array
-    {
-        $response = $this->listLocalModelsApi->listLocalModels();
-
-        return [];
-    }
-
-    public function completion(string $model, string $prompt, float $temperature): Response
+    public function completion(string $model, string $prompt, float $temperature): string
     {
         $response = $this->completionApi->getCompletion(
             new CompletionRequest(model: $model, prompt: $prompt, options: ['temperature' => $temperature]),
         );
 
-        return new Response(text: $response->response);
+        return $response->response;
     }
 }
