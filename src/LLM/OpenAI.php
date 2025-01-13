@@ -13,6 +13,11 @@ readonly class OpenAI implements LLMInterface
 
     /**
      * Find a list of models at the OpenAI pricing page:<br/>
+     * @param string      $model
+     * @param string      $prompt
+     * @param float       $temperature
+     * @param string|null $format
+     * @return string
      * @url https://openai.com/api/pricing/
      * <br/><br/>
      * Library docs:<br/>
@@ -21,9 +26,9 @@ readonly class OpenAI implements LLMInterface
      * OpenAI doc:<br/>
      * @url https://platform.openai.com/docs/api-reference/chat/create
      */
-    public function completion(string $model, string $prompt, float $temperature): string
+    public function completion(string $model, string $prompt, float $temperature, string $format = null): string
     {
-        $response = $this->client->chat()->create([
+        $request = [
             'model' => $model,
             'n' => 1, // force just one answer
             'messages' => [
@@ -33,7 +38,18 @@ readonly class OpenAI implements LLMInterface
                 ]
             ],
             'temperature' => $temperature,
-        ]);
+        ];
+
+        if (isset($format)) {
+            if ($format === 'json') {
+                $request['response_format']['type'] = 'json_object';
+            } else {
+                $request['response_format']['type'] = 'json_schema';
+                $request['response_format']['json_schema'] = $format;
+            }
+        }
+
+        $response = $this->client->chat()->create($request);
 
         return $response->choices[0]->message->content;
     }

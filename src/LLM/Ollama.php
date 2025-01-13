@@ -19,10 +19,15 @@ readonly class Ollama implements LLMInterface
         $this->listLocalModelsApi = new ListLocalModels($this->client);
     }
 
-    public function completion(string $model, string $prompt, float $temperature): string
+    public function completion(string $model, string $prompt, float $temperature, string $format = null): string
     {
         $response = $this->completionApi->getCompletion(
-            new CompletionRequest(model: $model, prompt: $prompt, options: ['temperature' => $temperature]),
+            new CompletionRequest(
+                model: $model,
+                prompt: $prompt,
+                options: ['temperature' => $temperature],
+                format: $format
+            ),
         );
 
         return $response->response;
