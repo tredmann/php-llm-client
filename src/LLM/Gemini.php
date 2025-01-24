@@ -30,4 +30,17 @@ readonly class Gemini implements LLMInterface
 
         return $response->text();
     }
+
+    public function models(): array
+    {
+        $models = [];
+
+        $modelResponse = $this->client->models();
+
+        foreach ($modelResponse->list()->models as $model) {
+            $models[] = $model->name;
+        }
+
+        return $models;
+    }
 }

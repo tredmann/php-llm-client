@@ -35,4 +35,17 @@ readonly class OpenAICompletion implements LLMInterface
 
         return $response->choices[0]->text;
     }
+
+    public function models(): array
+    {
+        $models = [];
+
+        $modelResponse = $this->client->models()->list();
+
+        foreach ($modelResponse->data as $model) {
+            $models[] = $model->id;
+        }
+
+        return $models;
+    }
 }

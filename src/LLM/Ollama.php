@@ -32,4 +32,17 @@ readonly class Ollama implements LLMInterface
 
         return $response->response;
     }
+
+    public function models(): array
+    {
+        $models = [];
+
+        $ollamaModelResponse = $this->listLocalModelsApi->listLocalModels();
+
+        foreach ($ollamaModelResponse->models as $model) {
+            $models[] = $model->name;
+        }
+
+        return $models;
+    }
 }

@@ -53,4 +53,17 @@ readonly class OpenAI implements LLMInterface
 
         return $response->choices[0]->message->content;
     }
+
+    public function models(): array
+    {
+        $models = [];
+
+        $modelResponse = $this->client->models()->list();
+
+        foreach ($modelResponse->data as $model) {
+            $models[] = $model->id;
+        }
+
+        return $models;
+    }
 }
